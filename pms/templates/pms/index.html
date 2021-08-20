@@ -1,0 +1,37 @@
+{% extends 'pms/base.html' %}
+
+{% block content %}
+<title>PMS - a project management system</title>
+	<center>
+	<br><br><br>
+	<h1 class="text text-success"><u>PMS</u></h1>
+	<i>A Simple Project Managing Tool</i>
+	<br>
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col border-end border-success">
+				New User?
+				<div class ="block">
+					Then <b>Register</b> Here
+				</div> 
+				<br><br>
+				<div class ="block">
+					<a href="{% url 'register' %}" class="btn btn-warning">Register</a>
+				</div> 
+				
+			</div>
+			<div class="col">
+				Already Have an account?
+				<div class ="block">
+					Then <b>Login</b> Here
+				</div> 
+				<br><br>
+				<div class ="block">
+					<a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+				</div> 
+			</div>
+		</div>
+	</div>
+	</center>
+{% endblock %}

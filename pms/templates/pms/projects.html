@@ -1,0 +1,41 @@
+{% extends 'pms/base.html' %}
+
+{% block content %}
+	<br><br>
+	<center>
+		<div class="container">
+		<div class="row">
+			<div class="col border-end border-success">
+				<div class ="block">
+					<b>Projects as Owner</b>
+				</div> 
+				<br><br>
+				<div class ="block">
+					<ol>
+				  	{% for project in projects_as_owner %}
+						<li><a href = "{% url 'projectdetails' projectid=project.id %}">{{ project.name }}</a></li>
+					{% endfor %}
+				  	</ol>
+				</div> 
+				
+			</div>
+			<div class="col">
+				<div class ="block">
+					<b>Projects as Worker</b>
+				</div> 
+				<br><br>
+				<div class ="block">
+					<ol>
+				  	{% for project in projects_as_worker %}
+						<li><a href = "{% url 'projectdetails' projectid=project.id %}">{{ project.name }}</a></li>
+					{% endfor %}
+				  	</ol>
+				</div> 
+			</div>
+		</div>
+	</div>
+	</center>
+	
+	
+{% endblock %}
+

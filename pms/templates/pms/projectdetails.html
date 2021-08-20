@@ -1,0 +1,122 @@
+{% extends 'pms/base.html' %}
+
+{% block content %}
+	<br>
+	<center>
+	<h1>Project Details</h1>
+	<br><br>
+	<div class = "container">
+		{% for detail in project %}
+			<div class="row" style="margin-bottom:20px;">
+    			<div class="col border border-dark">
+					<b>Project Name</b>
+				</div>
+				<div class="col border border-dark">
+					{{ detail.name }}
+				</div>
+			</div>
+			<div class="row" style="margin-bottom:20px;">
+    			<div class="col border border-dark">
+					<b>Project Description</b>
+				</div>
+				<div class="col border border-dark">
+					{{ detail.description }}
+				</div>
+			</div>
+			<div class="row" style="margin-bottom:20px;">
+    			<div class="col border border-dark">
+					<b>Project Owner</b>
+				</div>
+				<div class="col border border-dark">
+					{{ detail.owner }}
+				</div>
+			</div>
+			
+			{% if user_is_project_owner %}
+
+			<a href = "#">Edit (Project Name or Project Description)</a>
+
+			{% endif %}
+			<br><br>
+
+	
+			<div class="accordion" id="accordionExample">
+				<div class="accordion-item">
+    				<h2 class="accordion-header" id="headingOne">
+      					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        					Show workers of this project
+      					</button>
+    				</h2>
+    				<div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      					<div class="accordion-body">
+							{{ n_p_w }} available.
+						  {% for worker in project_workers %}
+								<div class="row" style="margin-bottom:20px;">
+									<div class="col">
+										{{ worker.username }}
+									</div>
+									{% if user_is_project_owner %}
+    								<div class="col">
+										{% comment %} <a href = "relieveworkers/{{ detail.id }}/{{ worker.id }}/" class = "btn btn-danger">Relieve From Project</a> {% endcomment %}
+										<a href = "{% url 'relieveworker' projectid=detail.id workerid=worker.id%}" class = "btn btn-danger">Relieve From Project</a>
+
+									</div>
+									{% endif %}
+								</div>
+								{% endfor %} 
+      					</div>
+    				</div>
+  				</div>
+				{% if user_is_project_owner %}
+  				<div class="accordion-item">
+    				<h2 class="accordion-header" id="headingTwo">
+      					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        					Add NEW workers from <b style = "padding-left:20px; padding-right:20px;">{{request.user.company}}</b> Company
+      					</button>
+    				</h2>
+    				<div id="collapseTwo" class="accordion-collapse collapse " aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      					<div class="accordion-body">
+						  {{ n_w_s_c }} available.
+        						{% for worker in workers_from_same_company %}
+								<div class="row" style="margin-bottom:20px;">
+									<div class="col">
+										{{ worker.username }}
+									</div>
+    								<div class="col">
+										{% comment %} <a href = "addworkers/{{ detail.id }}/{{ worker.id }}" class = "btn btn-warning text-white">Add to project</a> {% endcomment %}
+										<a href = "{% url 'addworker' projectid=detail.id workerid=worker.id %}" class = "btn btn-warning text-white">Add to project</a>
+
+									</div>
+								</div>
+								{% endfor %} 
+						</div>
+    				</div>
+					<div class="accordion-item">
+    				<h2 class="accordion-header" id="headingThree">
+     					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        					Add NEW workers from <b style = "padding-left:20px; padding-right:20px;">other</b> Companies
+      					</button>
+    				</h2>
+					<div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">      					
+							<div class="accordion-body">
+							{{ n_w_d_c }} available.
+        						{% for worker in workers_from_different_company %}
+								<div class="row" style="margin-bottom:20px;">
+									<div class="col">
+										{{ worker.username }}
+									</div>
+    								<div class="col">
+										<a href = "addworkers/{{ detail.id }}/{{ worker.id }}" class = "btn btn-warning text-white">Add to project</a>
+									</div>
+								</div>
+								{% endfor %} 
+						</div>
+    				</div>
+				{% endif %}
+  			</div>
+	
+	{% endfor %}
+	</center>
+
+
+{% endblock %}
