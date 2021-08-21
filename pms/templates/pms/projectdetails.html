@@ -4,6 +4,13 @@
 	<br>
 	<center>
 	<h1>Project Details</h1>
+	{% for message in messages %}
+		{% if message.level_tag == 'success' %}
+			<div class = "alert alert-success">{{ message }}</div>
+		{% else %}
+			<div class = "alert alert-danger">{{ message }}</div>
+		{% endif %}
+	{% endfor %}
 	<br><br>
 	<div class = "container">
 		{% for detail in project %}

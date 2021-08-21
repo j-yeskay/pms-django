@@ -26,10 +26,9 @@ def CreateProjectView(request):
 		owner = request.user
 		name = request.POST['name']
 		description = request.POST['description']
-		Project.objects.create(owner = owner, name = name, description = description)
-		return redirect('home')
-
-
+		p = Project.objects.create(owner = owner, name = name, description = description)
+		messages.info(request, "Project Created Successfully!")
+		return redirect('projectdetails', projectid = p.pk)
 
 	return render(request, 'pms/createproject.html')
 
@@ -76,6 +75,7 @@ def AddWorkersView(request, projectid, workerid):
 		worker = User.objects.get(id = workerid)
 		project = Project.objects.get(id = projectid)
 		project.workers.add(worker)
+		messages.info(request, str(worker.username) + " added to project!")
 	return redirect('projectdetails', projectid = projectid)
 
 
@@ -86,6 +86,7 @@ def RelieveFromProjectView(request, projectid, workerid):
 		project = Project.objects.get(id = projectid)
 		worker = project.workers.get(id = workerid)
 		project.workers.remove(worker)
+		messages.error(request, str(worker.username) + " relieved from project!")
 	return redirect('projectdetails', projectid = projectid)
 
 
