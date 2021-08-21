@@ -1,0 +1,24 @@
+{% extends 'pms/base.html' %}
+
+{% block content %}
+<title>Change Project Details</title>
+	<br>
+	<center>
+	<h1>Change Project details..</h1>
+	<br><br>
+	<div class="card" style="width:500px;">
+	<form method = 'POST' class = "form-group" action = "{% url 'changedetails' projectid=projectid %}">
+	{% csrf_token %}
+		<input type="text" name="name" value="{{ name }}" class="form-control" placeholder="Project Name" maxlength="255" required id="name" style="margin-bottom:5px;">
+		<input type="text" name="description" value="{{ description }}" class="form-control" placeholder="A Short Description about the project." maxlength="255" required id="description" style="margin-bottom:5px;">
+		<button type = "submit" class="btn btn-info" style="margin-bottom:5px;">Change details</button>
+	</form>
+	</div>
+	</center>
+	<script>
+			if({{ number_of_notifications }} != 0){
+				document.getElementById('no_of_notifications').innerHTML = {{number_of_notifications}};
+			}
+	</script>
+
+{% endblock %}

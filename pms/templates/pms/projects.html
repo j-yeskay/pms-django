@@ -1,13 +1,14 @@
 {% extends 'pms/base.html' %}
 
 {% block content %}
+<title>Projects</title>
 	<br><br>
 	<center>
 		<div class="container">
 		<div class="row">
 			<div class="col border-end border-success">
 				<div class ="block">
-					<b>Projects as Owner</b>
+					<b>Projects as Owner ({{number_of_projects_as_owner}})</b>
 				</div> 
 				<br><br>
 				<div class ="block">
@@ -21,7 +22,7 @@
 			</div>
 			<div class="col">
 				<div class ="block">
-					<b>Projects as Worker</b>
+					<b>Projects as Worker ({{number_of_projects_as_worker}})</b>
 				</div> 
 				<br><br>
 				<div class ="block">
@@ -35,6 +36,12 @@
 		</div>
 	</div>
 	</center>
+
+	<script>
+		if({{ number_of_notifications }} != 0){
+			document.getElementById('no_of_notifications').innerHTML = {{number_of_notifications}};
+		}
+	</script>
 	
 	
 {% endblock %}

@@ -1,3 +1,4 @@
+from pms.models import Notification
 from django.urls import path
 from . import views
 
@@ -6,9 +7,12 @@ urlpatterns = [
 	path('home/', views.HomeView, name = "home"),
 	path('createproject/', views.CreateProjectView, name = "createproject"),
 	path('projects/', views.ProjectsView, name = "projects"),
-	path('projects/<int:projectid>/', views.ProjectDetails, name = "projectdetails"),
+	path('projects/<int:projectid>/', views.ProjectDetailsView, name = "projectdetails"),
+	path('projects/changedetails/<int:projectid>/', views.ChangeProjectDetailsView, name = "changedetails"),
 	path('projects/addworker/<int:projectid>/<int:workerid>/', views.AddWorkersView, name = "addworker"),
 	path('projects/relieveworker/<int:projectid>/<int:workerid>/', views.RelieveFromProjectView, name = "relieveworker"),
+	path('notifications/', views.NotificationsView, name = "notifications"),
+	path('notifications/markasread/<int:notificationid>/', views.NotificationMarkAsReadView, name = "markasread"),
 
 
 	# AUTHENTICATION

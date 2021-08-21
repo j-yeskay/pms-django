@@ -1,8 +1,15 @@
 {% extends 'pms/base.html' %}
 
 {% block content %}
+	<title>Home</title>
 	<br><br><br><br><br>
 	<center>
 		<h2>You are currently involved in {{ n_p_i }} Projects!</h2>
 	</center>
+
+	<script>
+		if({{ number_of_notifications }} != 0){
+			document.getElementById('no_of_notifications').innerHTML = {{number_of_notifications}};
+		}
+	</script>
 {% endblock %}

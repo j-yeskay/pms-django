@@ -29,7 +29,9 @@
           <a class="nav-link active" aria-current="page" href="{% url 'projects' %}" style="margin-right:40px;">Projects</a>
         </li>
 		<li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" style="margin-right:40px;">Notifications</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'notifications' %}" style="margin-right:40px;">Notifications
+		  			<span class="badge bg-danger" id="no_of_notifications"></span>
+		  </a>
 		</li>
 		<li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>

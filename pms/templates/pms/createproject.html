@@ -1,6 +1,7 @@
 {% extends 'pms/base.html' %}
 
 {% block content %}
+<title>Create a project</title>
 	<br>
 	<center>
 	<h1>Create a New Project..</h1>
@@ -14,6 +15,10 @@
 	</form>
 	</div>
 	</center>
-
+	<script>
+			if({{ number_of_notifications }} != 0){
+				document.getElementById('no_of_notifications').innerHTML = {{number_of_notifications}};
+			}
+	</script>
 
 {% endblock %}

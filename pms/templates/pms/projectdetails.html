@@ -1,6 +1,7 @@
 {% extends 'pms/base.html' %}
 
 {% block content %}
+<title>Project Details</title>
 	<br>
 	<center>
 	<h1>Project Details</h1>
@@ -41,7 +42,7 @@
 			
 			{% if user_is_project_owner %}
 
-			<a href = "#">Edit (Project Name or Project Description)</a>
+			<a href = "{% url 'changedetails' projectid=detail.id %}">Edit (Project Name or Project Description)</a>
 
 			{% endif %}
 			<br><br>
@@ -113,7 +114,7 @@
 										{{ worker.username }}
 									</div>
     								<div class="col">
-										<a href = "addworkers/{{ detail.id }}/{{ worker.id }}" class = "btn btn-warning text-white">Add to project</a>
+										<a href = "{% url 'addworker' projectid=detail.id workerid=worker.id %}" class = "btn btn-warning text-white">Add to project</a>
 									</div>
 								</div>
 								{% endfor %} 
@@ -124,6 +125,11 @@
 	
 	{% endfor %}
 	</center>
+	<script>
+		if({{ number_of_notifications }} != 0){
+			document.getElementById('no_of_notifications').innerHTML = {{number_of_notifications}};
+		}
+	</script>
 
 
 {% endblock %}

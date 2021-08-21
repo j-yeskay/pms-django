@@ -1,0 +1,59 @@
+{% extends 'pms/base.html' %}
+
+{% block content %}
+<title>Notifications</title>
+<center>
+<br>
+<h2>My Notifications</h2>
+<br><br>
+{% for message in messages %}
+	<div class = "alert alert-warning">{{ message }}</div>
+	<br>
+{% endfor %}
+
+{% for notification in notifications %}
+	<div class = "block">{{ notification.content }}</div>
+{% endfor %}
+
+<div class="container">
+		<div class="row">
+			<div class="col border-end border-success">
+				<div class ="block">
+					<b>New and Unread Notifications</b>
+				</div> 
+				<br><br>
+				<div class ="block">
+					<ol>
+				  	{% for notification in unread_notifications %}
+						<li><div class = "block">{{ notification.content }} - <a href="{% url 'markasread' notificationid=notification.id %}">mark as read</a></div></li>
+							{{ notification.date_created|date:"d-m-Y" }}
+							<hr>
+					{% endfor %}
+				  	</ol>
+				</div> 
+				
+			</div>
+			<div class="col">
+				<div class ="block">
+					<b>Old Notifications</b>
+				</div> 
+				<br><br>
+				<div class ="block">
+					<ol>
+				  	{% for notification in read_notifications %}
+						<li><div class = "block">{{ notification.content }}</div></li>
+						{{ notification.date_created|date:"d-m-Y" }}
+						<hr>
+					{% endfor %}
+				  	</ol>
+				</div> 
+			</div>
+		</div>
+	</div>
+	<script>
+		if({{ number_of_notifications }} != 0){
+			document.getElementById('no_of_notifications').innerHTML = {{number_of_notifications}};
+		}
+	</script>
+
+{% endblock %}
