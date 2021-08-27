@@ -39,6 +39,45 @@
 					{{ detail.owner }}
 				</div>
 			</div>
+			<div class="row" style="margin-bottom:20px;">
+    			<div class="col border border-dark">
+					<b>Project Levels</b>
+				</div>
+				{% for status in project_statuses %}	
+					<div class="col border border-dark">
+						{% if status.level_tag|stringformat:'s' == detail.current_status|stringformat:'s' %}
+							<p>{{ status.level_tag }}</p>
+							<b>(Current Status)</b>
+						{% else %}
+							<p>{{ status.level_tag }}</p>
+							<a href="{% url 'moveproject' projectid=detail.id levelid=status.id %}">Move project here</a>
+						{% endif %}
+					</div>
+				{% endfor %}
+				<div class="col border border-dark">
+						<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target= "#exampleModal">Create a new level</button>
+								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Create a new level</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<form method = 'POST' class = "form-group" action = "{% url 'addnewlevel' projectid=detail.id %}">
+												{% csrf_token %}
+												<input type="text" name="leveltag" class="form-control">
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-primary">Create</button>
+												</div>
+											</form>
+										</div>
+										</div>
+									</div>
+								</div> 
+				</div>
+			</div>
+	
 			
 			{% if user_is_project_owner %}
 

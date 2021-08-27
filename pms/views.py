@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from . models import Notification, Project, User
+from . models import Notification, Project, ProjectLevel, User
 from . utils import get_project_owner_id_username, worker_already_in_project, get_no_of_notifications, get_no_of_projects
 
 
@@ -27,6 +27,10 @@ def CreateProjectView(request):
 		name = request.POST['name']
 		description = request.POST['description']
 		p = Project.objects.create(owner = owner, name = name, description = description)
+		pl = ProjectLevel.objects.create(level_tag = "Created")
+		p.all_status.add(pl)
+		p.current_status = pl
+		p.save()
 		messages.success(request, "Project Created Successfully!")
 		return redirect('projectdetails', projectid = p.pk)
 
@@ -45,7 +49,7 @@ def ProjectsView(request):
 def ProjectDetailsView(request, projectid):
 	project_workers = Project.objects.get(id = projectid).workers.all()
 	project = Project.objects.filter(id = projectid)
-
+	project_statuses = Project.objects.get(id = projectid).all_status.all()
 	if request.user.id ==  project[0].owner.id:
 		user_is_project_owner = 1
 		exclude_this = [request.user.id, project[0].owner.id]
@@ -61,7 +65,7 @@ def ProjectDetailsView(request, projectid):
 		no_of_workers_from_same_company = len(workers_from_same_company)
 		no_of_workers_from_different_company = len(workers_from_different_company)
 		
-		return render(request, 'pms/projectdetails.html', {'project': project,'project_workers': project_workers,'user_is_project_owner': user_is_project_owner,
+		return render(request, 'pms/projectdetails.html', {'project': project,'project_workers': project_workers, 'project_statuses': project_statuses, 'user_is_project_owner': user_is_project_owner,
 							'workers_from_same_company': workers_from_same_company, 'workers_from_different_company': workers_from_different_company, 
 							'n_p_w': no_of_project_workers,'n_w_s_c': no_of_workers_from_same_company, 'n_w_d_c': no_of_workers_from_different_company,
 							'number_of_notifications': get_no_of_notifications(request)})
@@ -69,6 +73,26 @@ def ProjectDetailsView(request, projectid):
 		user_is_project_owner = 0
 		no_of_project_workers = len(project_workers)
 		return render(request, 'pms/projectdetails.html', {'project': project,'project_workers': project_workers, 'user_is_project_owner': user_is_project_owner, 'n_p_w': no_of_project_workers, 'number_of_notifications': get_no_of_notifications(request)})
+
+
+@login_required(login_url='index')
+def AddNewLevelView(request, projectid):
+	if request.method == "POST":
+		p = Project.objects.get(id = projectid)
+		pl = ProjectLevel.objects.create(level_tag = request.POST["leveltag"])
+		p.all_status.add(pl)
+		p.save()
+		return redirect("projectdetails", projectid=projectid)
+
+
+
+@login_required(login_url='index')
+def MoveProjectView(request, projectid, levelid):
+	p = Project.objects.get(id = projectid)
+	l = ProjectLevel.objects.get(id = levelid)
+	p.current_status = l
+	p.save()
+	return redirect("projectdetails", projectid=projectid)
 
 
 @login_required(login_url='index')
